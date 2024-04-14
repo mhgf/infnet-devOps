@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout project') {
+            steps {
+                git('https://github.com/mhgf/infnet-devOps.git')
+                script {
+                    TAG_VERSION=sh(script:'git rev-parse --short HEAD', returnStdout:true).trim()
+                }
+            }
+        }
+         /*Build esse build foi adicionado apenas para demonstração pois todo build eh feito no dockerfile*/
+        stage('Build') {
+            steps {
+               sh "npm i"
+               sh "npm run build"
+            }
+        }
+        stage('Create Image') {
+            steps {
+               sh "docker build . -t mhferreira/app-dev-ops:${TAG_VERSION}"
+               sh "docker tag mhferreira/app-dev-ops:${TAG_VERSION} mhferreira/app-dev-ops:latest"
+            }
+        }
+        stage('Push Image') {
+            steps {
+               sh "docker push mhferreira/app-dev-ops:${TAG_VERSION}"
+               sh "docker push mhferreira/app-dev-ops:latest"
+            }
+        }
+        stage('Deploy K8s') {
+            steps {
+               sh "kubectl set image deploy/app-deploy app-container=mhferreira/app-dev-ops:${TAG_VERSION}"
+               sh "kubectl rollout status deploy/app-deploy"
+            }
+        }
+    }
+}
