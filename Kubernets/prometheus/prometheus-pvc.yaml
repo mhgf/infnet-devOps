@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: 
+  name: prometheus-volume-claim
+spec:
+  storageClassName: prom-volume
+  resources: 
+    requests:
+      storage: 10Gi
+  accessModes:
+    - ReadWriteMany

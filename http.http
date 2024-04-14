@@ -1,0 +1,38 @@
+# @host=http://localhost:30001/api
+@host=http://localhost:3000/api
+
+GET {{host}}/users HTTP/1.1
+
+###
+
+POST {{host}}/users HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "matheus",
+    "email": "email@email.com"
+}
+
+
+###
+
+GET {{host}}/tasks HTTP/1.1
+
+###
+
+POST {{host}}/tasks HTTP/1.1
+Content-Type: application/json
+
+{
+    "userId": 5,
+    "description": "ola mundo"
+}
+
+###
+
+PATCH {{host}}/tasks/15/status HTTP/1.1
+Content-Type: application/json
+
+{
+    "status": "IN_PROGRESS"
+}

@@ -1,0 +1,9 @@
+# Step 1
+FROM ubuntu
+WORKDIR /temp/jmeter
+RUN  apt update -y
+RUN  apt upgrade -y
+RUN  apt install openjdk-21-jdk -y
+COPY apache-jmeter ./jmeter
+COPY test.jmx .
+CMD [ "sleep" , "infinity"]

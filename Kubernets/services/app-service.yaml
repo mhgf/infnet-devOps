@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: app-ip
+spec:
+  type: ClusterIP
+  selector: 
+    app: app-nestjs-api
+  ports:
+   - protocol: TCP
+     port: 4040
+     targetPort: 3000

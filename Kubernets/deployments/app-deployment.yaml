@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: app-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-nestjs-api
+  template:
+    metadata:
+      name: app-pod
+      labels:
+        app: app-nestjs-api
+    spec:
+      containers: 
+        - name: app-container
+          image: mhferreira/app-dev-ops
+          imagePullPolicy: Always
+          env:
+            - name: DB_HOST
+              value: "10.107.209.194"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USERNAME
+              value: docker
+            - name: DB_PASSWORD
+              value: docker
+            - name: DB_DATABASE
+              value: devops
+          livenessProbe:
+            httpGet:
+              path: /api/users
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          

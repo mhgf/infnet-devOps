@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: bitnami/postgresql:latest
+    networks:
+      - devOPs
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=teste
+  app:
+    image: mhferreira/app-dev-ops
+    depends_on:
+      - postgres
+    networks:
+      - devOPs
+    ports:
+      - '3000:3000'
+    environment:
+      - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=docker
+      - DB_PASSWORD=docker
+      - DB_DATABASE=teste
+
+networks:
+  devOPs: {}
